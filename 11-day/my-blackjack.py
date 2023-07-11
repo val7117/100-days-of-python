@@ -34,9 +34,12 @@ while playing:
     def choose_card(deck=list):
         """This function chooses a random card and append it into the deck."""
         card = random.choice(cards)
-        if card == 11 and (21 - sum(deck)) < 11:
-            card = 1
-            deck.append(card)
+        if card == 11 and sum(deck) + card > 21:
+            deck.append(1)
+        else:
+            while sum(deck) + card > 21 and 11 in deck:
+                deck.remove(11)
+                deck.append(1)
         deck.append(card)
 
     # Two starting cards for player and dealer
@@ -56,7 +59,9 @@ while playing:
 
     # Asking to get another card
     keep_asking = True
-    while sum(player_cards) <= 21 and keep_asking:
+    while sum(player_cards) < 21 and keep_asking:
+        if sum(player_cards) == 21:
+            continue
         get_another_card = input("Type 'y' to get another card, type 'n' to pass: ")
         if get_another_card == 'n':
             keep_asking = False
